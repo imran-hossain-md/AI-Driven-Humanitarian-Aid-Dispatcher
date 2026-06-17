@@ -1,4 +1,5 @@
 import os
+import uvicorn
 from fastapi import FastAPI
 from app.api.endpoints import logistics
 
@@ -11,9 +12,8 @@ app.include_router(logistics.router, prefix="/api/v1/logistics", tags=["Logistic
 def read_root():
     return {"message": "Resilient-Path AI Engine is Operational"}
 
-# এটি যোগ করা খুব জরুরি যাতে সার্ভার ক্র্যাশ না করে
 if __name__ == "__main__":
-    import uvicorn
-    # রেন্ডার থেকে পাওয়া পোর্ট অথবা ডিফল্ট ১০০০০
+    # রেন্ডার সাধারণত পোর্ট হিসেবে ১০০০০ সেট করে
     port = int(os.environ.get("PORT", 10000))
-    uvicorn.run("app.main:app", host="0.0.0.0", port=port)
+    # খেয়াল করো এখানে "main:app" ব্যবহার করা হয়েছে কারণ আমরা app ফোল্ডারের ভেতরেই আছি
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)
